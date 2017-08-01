@@ -1,0 +1,33 @@
+<%= content_for(:content_header, 'Setting List')%>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header custom">
+        <div class="box-tools custom">
+          <div class="col-xs-6 col-md-2 pull-right">
+            <%= link_to new_option_path(format: 'js'), class: 'btn btn-block btn-sm btn-custom', data: { target: "#modalDialog", toggle: "modal" } do %>
+              <i class="fa fa-plus"></i> &nbsp; Add new setting
+            <% end if can? :create, Order %>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <!-- /.box-header -->
+      <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+          <tbody>
+            <tr>
+              <th>No</th>
+              <th>Option Name</th>
+              <th>Option Value</th>
+              <th></th>
+            </tr>
+            <%= render 'options/shared/list' %>
+         </tbody>
+        </table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+</div>

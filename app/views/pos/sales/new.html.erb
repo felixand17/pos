@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2 class="text-center"><%= "#{@order.customer}".upcase %></h2>
+    <h5 class="text-center"><%= @order.created_at.strftime('%d %B %y %H:%M:%S') %></h5>
+    <h5 class="text-center"> <strong><%= @order.pax %> pax</strong> </h5>
+    <br/>
+    <% if @order.buffet || !@order_details.blank? %>
+      <div class="menuList-container noScroll">
+        <% @order_details.each do |item| %>
+          <div class="menuList boxItem">
+            <div class="menuName">
+              <%= item.menu_name %> &nbsp; <span class="btn btn-xs btn-info"><%= item.qty %></span>
+            </div>
+            <div class="status price">
+              <%= number_to_currency(item.price * item.qty, unit: "RP ") %>
+            </div>
+          </div>
+        <% end %>
+        <% if @order.buffet %>
+          <div class="menuList boxItem">
+            <div class="menuName">
+              <%= link_to 'javascript:void(0)', id: 'show_ayce' do %>
+                All You Can Eat &nbsp; <span class="btn btn-xs btn-info"><%= @order.pax %> Pax</span>
+              <% end %>
+            </div>
+            <div class="status price">
+              <%= number_to_currency(@order.pax * @order.buffet_price, unit: "RP ") %>
+            </div>
+          </div>
+          <hr/>
+          <div class="ayceItems" id="extra_ayce" style="display: none;">
+            <% @buffet_items.each do |item| %>
+              <div class="menuList boxItem">
+                <div class="menuName">
+                  <%= item.menu_name %> &nbsp; <span class="btn btn-xs btn-info"><%= item.qty %></span>
+                </div>
+                <div class="status price">
+                  <%= number_to_currency(item.price * item.qty, unit: "RP ") %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%= form_for ['pos', @sale], html: { class: 'form-horizontal' } do |f| %>
+        <%= f.hidden_field :order_id %>
+        <%= f.hidden_field :user_id %>
+        <%= f.hidden_field :amount %>
+
+        <div class="row">
+          <div class="col-xs-12 pull-right">
+            <div class="box sale">
+              <label class="col-xs-6 text-center">SUB TOTAL</label>
+              <div class="col-xs-6 text-right">
+                <%= number_to_currency(@order.total_amount, unit: "RP ") %>
+              </div>
+              <div class="clear"></div>
+
+              <label class="col-xs-6 text-center">TAX</label>
+              <div class="col-xs-6 text-right">
+                <%= number_to_currency(@order.order_tax, unit: "RP ") %>
+              </div>
+              <div class="clear"></div>
+
+              <% if enable_order_service %>
+                <label class="col-xs-6 text-center">SERVICE</label>
+                <div class="col-xs-6 text-right">
+                  <%= number_to_currency(@order.order_service, unit: "RP ") %>
+                </div>
+                <div class="clear"></div>
+              <% end %>
+
+              <% if can? :manage, Sale %>
+                <label class="col-xs-6 text-center"></label>
+                <div class="col-xs-6   pull-right text-right">
+                    <%= f.number_field :discount, class: 'form-control input-lg', min: '0', max: '100', placeholder: 'Discount %' %>
+                </div>
+                <div class="clear"></div>
+              <% end %>
+              <hr/>
+
+              <label class="col-xs-6 text-center">TOTAL</label>
+              <div class="col-xs-6 text-right">
+                <span class="amount"><%= number_to_currency(@sale.amount, unit: "RP ") %></span>
+              </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <%= f.select :payment_method, @payment_method, { include_blank: 'Choose Payment Method' }, { class: 'form-control input-lg', required: true } %>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-xs-12">
+            <%= f.text_field :reference_number, class: 'form-control input-lg', placeholder: 'Reference Number' %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-12">
+            <%= f.number_field :payment, class: 'form-control input-lg', min: @sale.amount, placeholder: 'Payment', id: 'paymentField', required: true %>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-block btn-lg btn-custom" id="payBtn" onclick="this.disabled=true;this.form.submit();">
+          <i class="fa fa-check"></i> &nbsp; PAY
+        </button>
+
+        <%= link_to bill_pos_sales_path(order_id: @order.id), remote: true, id: 'printBill', class: "btn btn-block btn-lg btn-success" do %>
+          <i class="fa fa-print"></i> &nbsp; Print Bill
+        <% end %>
+      <% end %>
+
+    <% else %>
+      <h3 class="text-center">No item available</h3>
+    <% end %>
+  </div>
+</div>

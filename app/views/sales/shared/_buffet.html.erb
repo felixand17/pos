@@ -1,0 +1,52 @@
+<%= txt_align_ct %>
+Jl. L.L. RE. Martadinata 221
+022-205-2828
+NPWP: 80.957.331.4-423.000
+kukumama.id
+<%= txt_align_lt %>
+
+Start : <%= "#{order.created_at.in_time_zone('Jakarta').strftime('%d/%m/%Y %H:%M')}"[0...16].ljust(16, " ") %><%= "#{sale.user.name rescue '-'}"[0...24].rjust(24, " ") %><%= txt_align_lt %>
+End   : <%= "#{Time.now.in_time_zone('Jakarta').strftime('%d/%m/%Y %H:%M')}"[0...16].ljust(16, " ") %> <%= "Pax: #{order.pax}"[0...23].rjust(23, " ") %>
+Transaction #<%= order.code  %> <%= "#{order.customer}"[0...24].rjust(24, " ") %>
+<% unless sale.bill_only %><%= txt_bold_on %><%= txt_2height %>
+CLOSED BILL <%= sale.payment_method if sale.payment_method.eql?('COMPLIMENT') %>
+<%= txt_bold_off %><% end %>
+<%= straight_line %><%= txt_normal %>
+<% details.each do |item| %>
+<%= txt_bold_on %><%= ("#{item.menu_name}".html_safe + ' ' * 35)[0,35] %><%= ("x#{item.qty}"+ ' ' * 3)[0,3]  %><%= "#{ActionController::Base.helpers.number_to_currency(item.qty * item.price, unit: '', precision: 0)}"[0...10].rjust(10, " ")%>
+<% end %>
+<%= ("All You Can Eat" + ' ' * 35)[0,35] %><%= ("x#{order.pax}"+ ' ' * 3)[0,3] %><%= "#{ActionController::Base.helpers.number_to_currency(order.pax * order.buffet_price, unit: '', precision: 0)}"[0...10].rjust(10, " ")%>
+<%= txt_normal %><%= straight_line %>
+
+<%= ("Quantity" + ' ' * 24)[0,24] %> <%= "#{order.order_qty}"[0...23].rjust(23, " ")%>
+<%= ("Sub Total" + ' ' * 24)[0,24] %> <%= "#{ActionController::Base.helpers.number_to_currency(order.total_amount, unit: '', precision: 0)}"[0...23].rjust(23, " ") %>
+<%= ("10% Tax" + ' ' * 24)[0,24] %> <%= "#{ActionController::Base.helpers.number_to_currency(sale.tax, unit: '', precision: 0)}"[0...23].rjust(23, " ") %>
+<% if enable_order_service %>
+<%= ("5% Service" + ' ' * 24)[0,24] %> <%= "#{ActionController::Base.helpers.number_to_currency(sale.service, unit: '', precision: 0)}"[0...23].rjust(23, " ") %>
+<% end %>
+<% if sale.discount.to_i > 0 %>
+<%= ("#{sale.discount}% Discount" + ' ' * 24)[0,24] %> <%= "#{ActionController::Base.helpers.number_to_currency(sale.discount_amount, unit: '', precision: 0)}"[0...23].rjust(23, " ") %>
+<% end %>
+<%= txt_2height %><%= txt_bold_on %>
+<%= ("Total" + ' ' * 24)[0,24] %> <%= "#{ActionController::Base.helpers.number_to_currency(sale.amount, unit: '', precision: 0)}"[0...23].rjust(23, " ") %>
+<%= txt_bold_off %><%= txt_normal %>
+
+<% unless sale.bill_only %>
+<%= ("#{sale.payment_method}" + ' ' * 24)[0,24] %><%= "#{ActionController::Base.helpers.number_to_currency(sale.payment, unit: '', precision: 0)}"[0...24].rjust(24, " ") %>
+<%= ("Change" + ' ' * 24)[0,24] unless sale.payment_method.eql?('COMPLIMENT') %><%= "#{ActionController::Base.helpers.number_to_currency(sale.payment - sale.amount, unit: '', precision: 0)}"[0...24].rjust(24, " ") unless sale.payment_method.eql?('COMPLIMENT') %>
+<% end %>
+
+
+<%= start_line %>
+<%= txt_align_ct %><%= txt_bold_on %><%= txt_2height %>
+<% if sale.bill_only %>
+THIS IS NOT FINAL RECEIPT
+<% else %>
+"Berhenti Berharap, Mulai Makan!"
+<% end %>
+<%= txt_normal %><%= txt_bold_off %><%= txt_normal %>
+<% unless sale.bill_only %>
+POS Powered By RPS
+<% end %>
+<%= "\n"*5 %>
+<%= cut_paper %>

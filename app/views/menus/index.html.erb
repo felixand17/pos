@@ -1,0 +1,127 @@
+<%= content_for(:content_header, 'Menu List')%>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="col-xs-12">
+        <br/>
+        <div class="box smooth-border collapsed-box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Filter</h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="box-body">
+            <%= form_tag menus_path, method: 'get', class: 'form-horizontal filter-search'  do %>
+              <div class="col-xs-12">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <%= select_tag(:tenant_id, options_for_select(@tenants, params[:tenant_id]), prompt: "Filter by Tenant", class: 'form-control') %>
+                  </div>
+                </div>
+                <div class="clear"></div>
+                <div class="col-md-2 pull-right">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                      <span class="fa fa-search" aria-hidden="true"></span> &nbsp; Apply
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-2 pull-right">
+                  <div class="form-group">
+                    <%= link_to menus_path, class: 'btn btn-default btn-block' do %>
+                      <i class="fa fa-refresh"></i> Reset
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+
+      <div class="box-header custom">
+        <div class="box-tools custom">
+          <div class="col-xs-6 col-md-2 pull-right">
+            <%= link_to new_menu_path(format: 'js'), class: 'btn btn-block btn-sm btn-custom', data: { target: "#modalDialog", toggle: "modal" } do %>
+              <i class="fa fa-plus"></i> &nbsp; Add new menu
+            <% end if can? :create, Menu %>
+          </div>
+          <div class="col-xs-6 col-md-3 pull-right">
+            <%= link_to bulk_available_menus_path, method: :post, class: 'btn btn-block btn-sm btn-danger', data: { confirm: 'This action will reset all menu to available, Are you sure?' } do %>
+              <i class="fa fa-check"></i> &nbsp; Mark All as Available
+            <% end if can? :create, Menu %>
+          </div>
+          <div class="col-xs-6 col-md-2 pull-left">
+            <div class="has-feedback">
+                <input type="text" id="menuSearch" class="form-control input-sm" placeholder="Search">
+                <span class="fa fa-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <!-- /.box-header -->
+      <div class="box-body table-responsive no-padding">
+        <table class="table table-hover" id="tableMenu">
+          <tbody>
+            <tr>
+              <th>No</th>
+              <th>Tenant</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+            <% if !@menus.blank? %>
+              <% counter = 1 %>
+              <% @menus.each do |menu| %>
+                <tr>
+                  <td><%= counter %></td>
+                  <td class="<%= menu.availability? ? '' : 'rejected' %>">
+                    <%= link_to menu_path(id: menu.id, format: 'js'), data: { target: "#modalDialog", toggle: "modal" } do %>
+                      <%= menu.tenant.name %>
+                    <% end %>
+                  </td>
+                  <td class="<%= menu.availability? ? '' : 'rejected' %>">
+                    <%= link_to menu_path(id: menu.id, format: 'js'), data: { target: "#modalDialog", toggle: "modal" } do %>
+                      <%= menu.name %>
+                    <% end %>
+                  </td>
+                  <td class="<%= menu.availability? ? '' : 'rejected' %>"><%= number_to_currency(menu.price, unit: "IDR ") %></td>
+                  <td class="text-right">
+                    <%= link_to edit_menu_path(id: menu.id, format: 'js'), class: 'btn btn-sm btn-primary', data: { target: "#modalDialog", toggle: "modal" } do %>
+                      <i class="fa fa-pencil"></i> Edit
+                    <% end if can? :update, menu %>
+
+                    <%= link_to menu_path(menu.id), method: :delete, class: 'btn btn-sm btn-danger' do %>
+                      <i class="fa fa-trash"></i> Delete
+                    <% end if can? :destroy, menu %>
+
+                    <%= link_to available_menu_path(menu.id), method: :put, class: 'btn btn-sm btn-success' do  %>
+                      <i class="fa fa-check"></i> Available
+                    <% end if !menu.availability && (can? :available, menu) %>
+
+                    <%= link_to sold_out_menu_path(menu.id), method: :put, class: 'btn btn-sm btn-danger' do  %>
+                      <i class="fa fa-times"></i> Sold Out
+                    <% end if menu.availability && (can? :sold_out, menu) %>
+                  </td>
+                </tr>
+                <% counter += 1 %>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="6" class="text-center"><strong>No Data</strong></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<% notifications.each do |notification| %>
+  <li>
+    <%= link_to notification_path(notification.id) do %>
+      <i class="fa fa-bullseye text-aqua"></i> <%= notification.message %>
+    <% end %>
+  </li>
+<% end %>

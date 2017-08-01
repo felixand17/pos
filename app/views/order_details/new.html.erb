@@ -1,0 +1,39 @@
+<div class="modal-dialog">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <%= form_for @order_detail, class: 'form-horizontal' do |f| %>
+      <%= hidden_field_tag :order_id, @order_detail.order_id %>
+      <%= f.hidden_field :order_id %>
+      <%= f.hidden_field :menu_id %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group text-center">
+          <h3><%= @menu.name %></h3>
+          <h4>(<%= @menu.tenant.name %>)</h4>
+          <br/>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-12">Quantity <span class="required">*</span></label>
+          <div class="col-md-12">
+            <%= f.number_field :qty, class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-12">Note</label>
+          <div class="col-md-12">
+            <%= f.text_area :notes, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success">
+          <i class="fa fa-check"></i> Save
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<%= content_for(:content_header, 'Tenant List')%>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header custom">
+        <div class="box-tools custom">
+          <div class="col-xs-6 col-md-2 pull-right">
+            <div class="input-group input-group-sm pull-right" style="width: 150px;">
+              <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-md-2 pull-right">
+            <%= link_to new_tenant_path(format: 'js'), class: 'btn btn-block btn-sm btn-custom', data: { target: "#modalDialog", toggle: "modal" } do %>
+              <i class="fa fa-plus"></i> &nbsp; Add new tenant
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <!-- /.box-header -->
+      <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+          <tbody>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Created at</th>
+              <th>Last Login</th>
+              <th>Last IP Login</th>
+              <th></th>
+            </tr>
+            <% if !@tenants.blank? %>
+              <% @tenants.each do |tenant| %>
+                <tr>
+                  <td><%= tenant.id %></td>
+                  <td><%= tenant.name %></td>
+                  <td><%= tenant.created_at.strftime('%d, %b %Y') %></td>
+                  <td><%= tenant.user.last_sign_in_at.strftime('%d, %b %Y') rescue '-' %></td>
+                  <td><%= tenant.user.last_sign_in_ip rescue '-' %></td>
+                  <td class="text-right">
+                    <%= link_to edit_tenant_path(id: tenant.id, format: 'js'), class: 'btn btn-sm btn-primary', data: { target: "#modalDialog", toggle: "modal" } do %>
+                      <i class="fa fa-pencil"></i> Edit
+                    <% end %>
+                    <%= link_to tenant_path(tenant.id), method: :delete, class: 'btn btn-sm btn-danger' do %>
+                      <i class="fa fa-trash"></i> Delete
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="6" class="text-center"><strong>No Data</strong></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>FoodCourt</title>
+    <%= action_cable_meta_tag %>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% unless Rails.env.eql?('development') %>
+      <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
+      <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(["init", {
+          appId: "0685de84-25c6-4361-9263-55a92b73751d",
+          autoRegister: false, /* Set to true to automatically prompt visitors */
+          subdomainName: 'https://kukumama.onesignal.com',
+          httpPermissionRequest: {
+            enable: true
+          },
+          notifyButton: {
+              enable: true /* Set to false to hide */
+          }
+        }]);
+
+        OneSignal.push(function() {
+          /* These examples are all valid */
+          OneSignal.getUserId(function(userId) {
+            if ( userId ){
+              if ( userId != "<%= current_user.web_player_id %>" ) {
+                postWebPlayerId(userId, "<%= import_player_id_user_url(current_user.id) %>");
+              }
+            }
+          });
+        });
+      </script>
+    <% end %>
+  </head>
+
+  <body class="hold-transition skin-green-light layout-top-nav">
+    <div class="wrapper">
+      <!-- Main Header -->
+      <%= render 'pos/shared/main_header' %>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <div class="container">
+          <!-- Main content -->
+          <section class="content">
+            <%= yield %>
+          </section>
+          <!-- /.content -->
+        </div>
+      </div>
+      <!-- /.content-wrapper -->
+
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+          Version 2016.0.0.1
+        </div>
+        <!-- Default to the left -->
+        Copyright &copy; <%= Time.now.year %>. All rights reserved.
+      </footer>
+    </div>
+    <%= render 'shared/modal_dialog' %>
+    <%= custom_bootstrap_flash %>
+    <%= render'shared/modal_ie' %>
+  </body>
+</html>

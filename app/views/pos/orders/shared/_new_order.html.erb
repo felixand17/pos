@@ -1,0 +1,25 @@
+<div class="col-md-12">
+  <%= form_for ['pos', @order], html: { class: 'form-horizontal' } do |f| %>
+    <%= f.hidden_field :customer %>
+    <%= f.hidden_field :user_id %>
+    <div class="form-group">
+      <label class="col-md-12">Pax</label>
+      <div class="col-md-12">
+        <%= f.number_field :pax, class: 'form-control input-lg', placeholder: 'Pax', required: true %>
+      </div>
+    </div>
+    <% if buffet_mode %>
+      <div class="form-group">
+        <label class="col-md-12">
+          <%= f.check_box :buffet %> All You Can Eat
+        </label>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <button type="submit" class="btn btn-block btn-lg btn-custom">
+        Next &nbsp; <i class="fa fa-angle-right"></i>
+      </button>
+    </div>
+    <div class="clear"></div>
+  <% end %>
+</div>

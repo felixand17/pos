@@ -1,0 +1,5 @@
+<% if @orders.blank? %>
+  $("#searchResult").html("<%= j render 'pos/orders/shared/new_order' %>");
+<% else %>
+  $("#searchResult").html("<%= j render 'pos/orders/shared/list' %>");
+<% end %>

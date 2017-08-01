@@ -1,0 +1,89 @@
+<%= content_for(:content_header, 'Order Process')%>
+
+<div class="row">
+  <div class="col-md-3">
+    <%= link_to edit_order_path(id: params[:id]), class: 'btn btn-custom btn-block margin-bottom' do %>
+      <i class="fa fa-shopping-cart"></i> &nbsp; POST
+    <% end %>
+
+    <div class="box box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title">Order Information</h3>
+
+        <div class="box-tools">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="box-body no-padding">
+        <ul class="nav nav-pills nav-stacked">
+          <li>
+            <div class="row">
+              <label class="col-xs-5">CUSTOMER:</label>
+              <div class="col-xs-7"><%= @order.customer %></div>
+            </div>
+          </li>
+          <% if current_user.admin? || current_user.cashier? %>
+            <li>
+              <div class="row">
+                <label class="col-xs-5">WAITRES:</label>
+                <div class="col-xs-7"><%= @order.user.name %></div>
+              </div>
+            </li>
+            <li>
+              <div class="row">
+                <label class="col-xs-5">TOTAL:</label>
+                <div class="col-xs-7"><%= @order.total_amount %></div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /. box -->
+  </div>
+  <div class="col-md-9">
+    <%= form_tag order_details_path(order_id: params[:id]), method: :get, remote: true do %>
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <h3 class="box-title">Menu List</h3>
+          <!-- /.box-tools -->
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body no-padding">
+          <div class="mailbox-controls">
+            <!-- Check all button -->
+            <div class="col-md-3 col-xs-12 pull-right">
+              <div class="has-feedback">
+                <%= text_field_tag 'keyword', nil, class: 'form-control input-sm', placeholder: 'Search Menu' %>
+                <span class="fa fa-search form-control-feedback"></span>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="table-responsive mailbox-messages custom">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>Tenant</th>
+                  <th>Menu</th>
+                  <th>Price</th>
+                  <th>Availability</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="data">
+                <%= render 'order_details/shared/menu_list' %>
+              </tbody>
+            </table>
+            <!-- /.table -->
+          </div>
+          <!-- /.mail-box-messages -->
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /. box -->
+    <% end %>
+  </div>
+</div>

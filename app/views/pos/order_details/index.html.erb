@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="pageHeader col-xs-12">
+    <div class="col-xs-3"></div>
+    <%= link_to edit_pos_order_path(id: @order.id), class: 'btn btn-lg btn-custom pull-right' do %>
+      <i class="fa fa-shopping-cart"></i> &nbsp; POST
+    <% end %>
+  </div>
+  <div class="col-xs-12">
+    <h2 class="text-center"> <%= "#{@order.customer}".upcase %> </h2>
+    <h5 class="text-center"><%= @order.created_at.strftime('%d %B %y %H:%M:%S') %></h5>
+    <h5 class="text-center"> <strong><%= @order.pax %> pax</strong> </h5>
+    <br/>
+    <%= form_tag pos_order_details_path(order_id: @order.id), method: :get, remote: true, id: 'orderSearch', class: 'form-horizontal' do %>
+      <div class="form-group text-center">
+        <div class="col-xs-12">
+          <%= text_field_tag :keyword, nil, class: 'form-control input-lg', data: { 'remote-search': true }, autocomplete: 'off', placeholder: 'Input Menu Name' %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="col-xs-12">
+      <div class="row" id="searchResult"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<%= content_for(:content_header, 'User List')%>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header custom">
+        <div class="box-tools custom">
+          <div class="col-xs-6 col-md-2 pull-right">
+            <div class="input-group input-group-sm pull-right" style="width: 150px;">
+              <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-md-2 pull-right">
+            <%= link_to new_user_path(format: 'js'), class: 'btn btn-block btn-sm btn-custom', data: { target: "#modalDialog", toggle: "modal" } do %>
+              <i class="fa fa-plus"></i> &nbsp; Add new user
+            <% end if can? :create, User %>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <!-- /.box-header -->
+      <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+          <tbody>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Created at</th>
+              <th>Last Login</th>
+              <th>Last IP Login</th>
+              <th></th>
+            </tr>
+            <% if !@users.blank? %>
+              <% @users.each do |user| %>
+                <tr>
+                  <td><%= user.id %></td>
+                  <td><%= user.name %></td>
+                  <td><%= user.email %></td>
+                  <td><%= user.role.name %></td>
+                  <td><%= user.created_at.strftime('%d, %b %Y') %></td>
+                  <td><%= user.last_sign_in_at.strftime('%d, %b %Y') rescue '-' %></td>
+                  <td><%= user.last_sign_in_ip %></td>
+                  <td class="text-right">
+                    <%= link_to edit_user_path(id: user.id, format: 'js'), class: 'btn btn-sm btn-primary', data: { target: "#modalDialog", toggle: "modal" } do %>
+                      <i class="fa fa-pencil"></i> Edit
+                    <% end if can? :update, user %>
+                    <%= link_to user_path(user.id), method: :delete, class: 'btn btn-sm btn-danger' do %>
+                      <i class="fa fa-trash"></i> Delete
+                    <% end if can? :delete, user %>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="7" class="text-center"><strong>No Data</strong></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+</div>

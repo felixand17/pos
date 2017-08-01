@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-xs-12">
+    <%= form_tag pos_orders_path, method: :get, remote: true, id: 'orderSearch', class: 'form-horizontal' do %>
+      <h2 class="text-center"> Table / Customer </h2><br/>
+      <div class="form-group">
+        <div class="col-xs-12">
+          <%= text_field_tag :keyword, nil, class: 'form-control input-lg', data: { 'remote-search': true }, autocomplete: 'off', placeholder: 'Table / Customer Name' %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="col-xs-12">
+      <div class="row" id="searchResult"></div>
+    </div>
+  </div>
+</div>

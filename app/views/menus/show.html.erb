@@ -1,0 +1,33 @@
+<div class="modal-dialog">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title"><%= @menu.name %></h4>
+    </div>
+    <div class="modal-body">
+      <% unless @menu.picture.blank? %>
+        <div class="thumbnail">
+          <%= image_tag @menu.picture.url %>
+        </div>
+      <% end %>
+      <div class="row">
+        <label class="col-md-3">Category</label>
+        <div class="col-md-9"><%= @menu.category.name %></div>
+      </div>
+      <div class="row">
+        <label class="col-md-3">Price</label>
+        <div class="col-md-9">
+          <span class="btn btn-xs btn-success">
+            <%= number_to_currency(@menu.price, unit: "IDR ") %>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <label class="col-md-3">Description</label>
+        <div class="col-md-9"><p><%= @menu.description %></p></div>
+      </div>
+    </div>
+    <div class="modal-footer"></div>
+  </div>
+</div>

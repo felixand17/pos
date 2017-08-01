@@ -1,0 +1,84 @@
+<%= content_for(:content_header, 'Report')%>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <%= form_tag closing_order_reports_path, method: :get, class: 'form-horizontal loader' do %>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="col-xs-12">Date</label>
+                <div class="col-xs-12">
+                  <%= text_field_tag  :start_date, params[:start_date] || Time.now.strftime('%Y-%m-%d'), class: 'form-control datepicker', data: { 'date-format': 'yyyy-mm-dd' }, required: true %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="col-xs-12">Date</label>
+                <div class="col-xs-12">
+                  <%= text_field_tag  :end_date, params[:end_date] || Time.now.strftime('%Y-%m-%d'), class: 'form-control datepicker', data: { 'date-format': 'yyyy-mm-dd' }, required: true %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="col-xs-12">&nbsp;</label>
+                <div class="col-xs-12">
+                  <%= submit_tag 'Generate', class: 'btn btn-block btn-success', onsubmit: "this.disabled=true;this.value='Sending';this.form.submit();" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="table-responsive no-padding" id="reportPreview">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Tenant</th>
+                <th class="text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% counter = 1 %>
+              <% @tenant_report.each do |tenant| %>
+                <tr>
+                  <td><%= counter %><% counter += 1 %></td>
+                  <td><%= tenant.second %></td>
+                  <td class="text-right"><%= number_to_currency(tenant.third, unit: "RP ") %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <hr/>
+
+          <div class="col-md-6 pull-right">
+            <table class="table table-horizontal">
+              <thead>
+                <tr>
+                  <th colspan="2">Total per category</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% counter = 1 %>
+                <% @category_report.each do |category| %>
+                  <tr>
+                    <td>
+                      <strong> <%= category.first %> </strong>
+                    </td>
+                    <td class="text-right"><%= number_to_currency(category.second, unit: "RP ") %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

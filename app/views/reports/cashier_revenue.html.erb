@@ -1,0 +1,138 @@
+<%= content_for(:content_header, 'Report')%>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <%= form_tag cashier_revenue_reports_path, method: :get, class: 'form-horizontal loader' do %>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="col-xs-12">Start Date</label>
+                <div class="col-xs-12">
+                  <%= text_field_tag  :start_date, params[:start_date], class: 'form-control datepicker', data: { 'date-format': 'yyyy-mm-dd' }, required: true %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="col-xs-12">End Date</label>
+                <div class="col-xs-12">
+                  <%= text_field_tag  :end_date, params[:end_date], class: 'form-control datepicker', data: { 'date-format': 'yyyy-mm-dd' }, required: true %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="col-xs-12">&nbsp;</label>
+                <div class="col-xs-12">
+                  <%= submit_tag 'Generate', class: 'btn btn-block btn-success', onsubmit: "this.disabled=true;this.value='Sending';this.form.submit();" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="table-responsive no-padding" id="reportPreview">
+          <% if !params[:start_date].blank? && !params[:end_date].blank?  %>
+            <br/>
+            <h3 class="text-center">Cashier Report</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th colspan="2">Payment Method</th>
+                  <th class="text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% unless @cashier_report.blank? %>
+                  <% @cashier_report.each do |key, value| %>
+                    <tr>
+                      <td colspan="2">
+                        <%= link_to 'javascript:void(0)', id: "show_#{key}" do %>
+                          <%= key.blank? ? 'UNCATEGORIZE' : key %>
+                        <% end %>
+                      </td>
+                      <td class="text-right"><%= number_to_currency(value, unit: "RP ") %></td>
+                    </tr>
+                    <tr id="extra_<%= key %>" style="display: none;">
+                      <td colspan="3">
+                        <table class="table table-striped">
+                          <thead>
+                            <th>#Number</th>
+                            <th>Flag</th>
+                            <th>Customer</th>
+                            <th class="text-center">Quantity Order</th>
+                            <th class="text-right">Total Order</th>
+                          </thead>
+                          <tbody>
+                            <% @detail_cashier_report[key].each do |order| %>
+                                <tr>
+                                  <td>
+                                    <%= link_to_unless(!(can? :manage, Order), order.code, edit_order_path(id: order.id)) %>
+                                  </td>
+                                  <td>
+                                    <%= link_to 'javascript:void(0)', class: 'btn btn-xs btn-info' do %>
+                                      <i class="fa fa-flag"></i> &nbsp; AYCE
+                                    <% end if order.buffet %>
+                                  </td>
+                                  <td>
+                                    <%= order.customer %>
+                                  </td>
+                                  <td class="text-center">
+                                    <%= order.order_details.sum(:qty) %>
+                                  </td>
+                                  <td class="text-right">
+                                    <%= number_to_currency(order.sale.amount, unit: "RP ") %>
+                                  </td>
+                                </tr>
+                            <% end %>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+
+                <tr>
+                  <td colspan="2"> <strong> Total Revenue </strong> </td>
+                  <td class="text-right">
+                    <% revenue = @cashier_report.map {|key, value| value }.reduce(0, :+) rescue nil %>
+                    <%= number_to_currency(revenue, unit: "RP ") %>
+                  </td>
+                </tr>
+
+                <% if !@buffet_report.eql?(0.00) %>
+                  <tr>
+                    <td></td>
+                    <td>All you can eat</td>
+                    <td class="text-left">
+                      <strong><%= number_to_currency(@buffet_report, unit: "RP ") %></strong>
+                    </td>
+                  </tr>
+                <% end %>
+
+                <% total_open_order = @open_order_report.last.last rescue 0.to_f %>
+                <% @open_order_report.each do |value| %>
+                  <tr>
+                    <td colspan="2"> <strong> Total Pending Order </strong> </th>
+                    <td class="text-right"><%= number_to_currency(value.last.to_f, unit: "RP ") %></td>
+                  </tr>
+                <% end %>
+
+                <tr>
+                  <td colspan="2"> <strong> Total </strong> </td>
+                  <td class="text-right">
+                    <% total = revenue.to_f + total_open_order.to_f %>
+                    <%= number_to_currency(total, unit: "RP ") %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

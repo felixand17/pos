@@ -1,0 +1,18 @@
+                 KUKUMAMA
+               Jl. Riau 221
+
+<%= "#{Time.now.strftime("%d %B %Y %H:%M:%S")}"[0...48].rjust(48, " ") %>
+
+Order Number: #<%= order.code %>
+Customer:     <%= order.customer %>
+
+------------------------------------------------
+
+<% order_details.each do |item| %>
+  <%= (item.menu_name + ' ' * 40)[0,40] %><%= "#{item.qty}"[0...2].rjust(2, " ") %>x
+<% end %>
+
+------------------------------------------------
+
+<%= ('Total Quantity:' + ' ' * 43)[0,43] %><%= "#{order_details.sum('qty')}"[0...2].rjust(2, " ") %>
+

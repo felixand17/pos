@@ -1,0 +1,16 @@
+<% @menus.each do |menu| %>
+  <% menu_url = new_pos_order_detail_path(order_id: @order.id, menu_id: menu.id) %>
+  <% menu_url = 'javascript:void(0)' unless menu.availability %>
+
+  <%= link_to menu_url, class: 'btn btn-block btn-lg btn-default menuList' do %>
+    <div class="menuName">
+      <div class="acronym-text"><%= acronym_text(menu.tenant.name) %></div>
+      <%= menu.name %>
+      <% unless menu.availability %>
+        <div id="watermark">
+          <%= image_tag 'sold-out.png', class: 'img-responsive sold-out', alt: 'Sold Out'  %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

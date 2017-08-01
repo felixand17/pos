@@ -1,0 +1,24 @@
+<div class="modal-dialog">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <%= form_tag reject_order_details_path(id: @order_detail.order_id, order_id: @order_detail.order_id, order_detail_id: @order_detail.id), method: :put, class: 'form-horizontal' do |f| %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Reject Order</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-md-12">Reason <span class="required">*</span></label>
+          <div class="col-md-12">
+            <%= text_area_tag :comment, nil, class: 'form-control', required: true %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success">
+          <i class="fa fa-check"></i> Confirm
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>

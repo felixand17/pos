@@ -1,0 +1,82 @@
+<div class="box box-solid">
+  <div class="box-header with-border">
+    <h3 class="box-title">Log</h3>
+    <!-- /.box-tools -->
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body no-padding">
+    <div class="table-responsive mailbox-messages">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>Date</th>
+            <th>Author</th>
+            <th>Object</th>
+            <th>Object Id</th>
+            <th>Event</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @order_logs.each do |version| %>
+            <tr>
+              <td><%= version.id %></td>
+              <td><%= version.created_at.in_time_zone('Jakarta') %></td>
+              <td><%= find_version_author_name(version.whodunnit) %></td>
+              <td><%= version.item_type %></td>
+              <td><%= version.item_id %></td>
+              <td><%= version.event.humanize %></td>
+              <td></td>
+              <td></td>
+            </tr>
+          <% end %>
+          <tr>
+            <td colspan="8">
+              <div><hr></div>
+            </td>
+          </tr>
+          <% @order_detail_logs.each do |version| %>
+            <tr>
+              <td><%= version.id %></td>
+              <td><%= version.created_at.in_time_zone('Jakarta') %></td>
+              <td><%= find_version_author_name(version.whodunnit) %></td>
+              <td><%= version.item_type %></td>
+              <td><%= version.item_id %></td>
+              <td><%= version.event.humanize %></td>
+              <td></td>
+              <td class="text-center">
+                <%= link_to 'javascript:void(0)', class: 'btn btn-sm btn-success', id: "show_#{version.id}" do %>
+                  <i class="fa fa-search-plus"></i>
+                <% end %>
+              </td>
+            </tr>
+            <tr id="extra_<%= version.id %>" style="display: none;">
+              <td colspan="8">
+                <div>
+                  <table class="table">
+                    <% PaperTrail.serializer.load(version.object).each do |key, value| %>
+                      <tr>
+                        <td width="10%">
+                          <label><%= key %></label>
+                        </td>
+                        <td>
+                          : <span><%= value %></span>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.mail-box-messages -->
+  </div>
+  <!-- /.box-body -->
+</div>
+<!-- /. box -->

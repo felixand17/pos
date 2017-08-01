@@ -1,0 +1,81 @@
+<!-- Main Header -->
+<header class="main-header">
+  <!-- Sidebar toggle button-->
+  <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+    <span class="sr-only">Toggle navigation</span>
+  </a>
+
+  <!-- Header Navbar -->
+  <nav class="navbar navbar-static-top" role="navigation">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><%= image_tag 'logo-white.png', class: 'img-roundeded img-responsive logo-top', alt: 'Kuku Mama'  %></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><%= image_tag 'logo-white.png', class: 'img-roundeded img-responsive logo-top', alt: 'Kuku Mama'  %></span>
+    </a>
+    <!-- Navbar Right Menu -->
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <% if can? :index, Notification %>
+          <!-- Notifications Menu -->
+          <li class="dropdown notifications-menu">
+            <!-- Menu toggle button -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning totalNotification"><%= notifications.count %></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">
+                You have <span class="totalNotification"><%= notifications.count %></span> notifications
+              </li>
+              <li>
+                <!-- Inner Menu: contains the notifications -->
+                <ul class="menu" id="contentNotification">
+                  <%= render 'shared/notifications' %>
+                </ul>
+              </li>
+              <li class="footer">
+                <%= link_to 'View all', notifications_path %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+        <!-- User Account Menu -->
+        <li class="dropdown user user-menu">
+          <!-- Menu Toggle Button -->
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <!-- The user image in the navbar-->
+            <%= image_tag 'no-avatar.png', class: 'user-image', alt: 'User Image'  %>
+            <!-- hidden-xs hides the username on small devices so only the image appears. -->
+            <span class="hidden-xs"><%= current_user.name %></span>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- The user image in the menu -->
+            <li class="user-header">
+              <%= image_tag 'no-avatar.png', class: 'img-circle', alt: 'User Image'  %>
+
+              <p>
+                <%= current_user.name %> - <%= current_user.role.name %>
+                <small>Member since <%= current_user.created_at.strftime('%B. %Y') %></small>
+              </p>
+            </li>
+            <!-- Menu Footer-->
+            <li class="user-footer">
+              <div class="pull-left">
+                <%= link_to edit_user_path(id: current_user.id, format: 'js'), class: 'btn btn-default btn-flat', data: { target: "#modalDialog", toggle: "modal" } do %>
+                  Setting
+                <% end if can? :update, User %>
+              </div>
+              <div class="pull-right">
+                <%= link_to destroy_user_session_path, method: :delete, class: 'btn btn-default btn-flat' do %>
+                  Sign out
+                <% end %>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

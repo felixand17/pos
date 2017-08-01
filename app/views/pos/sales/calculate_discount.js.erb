@@ -1,0 +1,2 @@
+$('input[name="sale[amount]"]').val("<%= @sale.amount %>");
+$('span.amount').html("<%= number_to_currency(@sale.amount, unit: 'RP ') %>");

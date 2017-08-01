@@ -1,0 +1,124 @@
+<aside class="main-sidebar">
+
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu">
+      <li class="header">NAVIGATION</li>
+      <!-- Optionally, you can add icons to the links -->
+      <li>
+        <%= link_to users_path do %>
+          <i class="fa fa-user-secret"></i> <span>User</span>
+        <% end if can? :index, User %>
+      </li>
+      <li>
+        <%= link_to tenants_path do %>
+          <i class="fa fa-users"></i> <span>Tenant</span>
+        <% end if can? :index, Tenant %>
+      </li>
+      <li>
+        <%= link_to categories_path do %>
+          <i class="fa fa-list-ul"></i> <span>Menu Category</span>
+        <% end if can? :index, Category %>
+      </li>
+      <li>
+        <%= link_to menus_path do %>
+          <i class="fa fa-list-alt"></i> <span>Menu</span>
+        <% end if can? :index, Menu %>
+      </li>
+      <li>
+        <%= link_to orders_path do %>
+          <i class="fa fa-shopping-basket"></i> <span>Order</span>
+        <% end if can? :manage, Order %>
+      </li>
+      <% if (can? :manage, :order) || (can? :manage, :sale) %>
+        <li class="treeview">
+          <%= link_to '#' do %>
+            <i class="fa fa-laptop"></i> <span>POS</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          <% end %>
+          <ul class="treeview-menu">
+            <li>
+              <%= link_to pos_orders_path do %>
+                <i class="fa fa-circle-o"></i> <span>Order</span>
+              <% end if can? :manage, :order %>
+            </li>
+            <li>
+              <%= link_to '/pos/orders/sales' do %>
+                <i class="fa fa-circle-o"></i> <span>Sale</span>
+              <% end if can? :manage, :sale %>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+      <% if (can? :manage, :report) %>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-line-chart"></i> <span>Reports</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li>
+              <%= link_to reports_path do %>
+                <i class="fa fa-circle-o"></i> Sales per Tenant
+              <% end %>
+            </li>
+            <li>
+              <%= link_to closing_order_reports_path do %>
+                <i class="fa fa-circle-o"></i> Closing Order
+              <% end %>
+            </li>
+            <li>
+              <%= link_to cashier_revenue_reports_path do %>
+                <i class="fa fa-circle-o"></i> Cashier Revenue
+              <% end %>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+      <li>
+        <%= link_to log_index_path do %>
+          <i class="fa fa-clock-o"></i> <span>Log Activity</span>
+        <% end if can? :manage, :log %>
+      </li>
+      <% if (can? :index, Permission) || (can? :index, Role) %>
+        <li class="treeview">
+          <%= link_to '#' do %>
+            <i class="fa fa-shield"></i> <span>IAM</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          <% end %>
+          <ul class="treeview-menu">
+            <li>
+              <%= link_to iam_permissions_path do %>
+                <i class="fa fa-circle-o"></i> Permission
+              <% end if can? :index, Permission %>
+            </li>
+            <li>
+              <%= link_to iam_roles_path do %>
+                <i class="fa fa-circle-o"></i> Role
+              <% end if can? :index, Role %>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+      <li>
+        <%= link_to options_path do %>
+          <i class="fa fa-gear"></i> <span>Option</span>
+        <% end if can? :manage, Option %>
+      </li>
+      <li>
+        <%= link_to '#' do %>
+          <i class="fa fa-question-circle-o"></i> Help
+        <% end %>
+      </li>
+    </ul>
+    <!-- /.sidebar-menu -->
+  </section>
+  <!-- /.sidebar -->
+</aside>

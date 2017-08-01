@@ -1,0 +1,36 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+      <th>No</th>
+      <th>Order Number</th>
+      <th>Order Date</th>
+      <th>Menu Name</th>
+      <th class="text-center">Quantity</th>
+      <th class="text-right">Total</th>
+    </tr>
+    <tr>
+      <td colspan="4"></td>
+      <td class="text-center">
+        <strong><%= @order_details.sum(:qty) rescue nil %> (Item)<strong>
+      </td>
+      <td class="text-right">
+        <strong>
+          <%= number_to_currency(@total_order, unit: "RP ") rescue nil %>
+        </strong>
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    <% counter = 1 %>
+    <% @order_details.each do |detail| %>
+      <tr>
+        <td><%= counter %><% counter += 1 %></td>
+        <td>#<%= detail.order.code %></td>
+        <td><%= detail.order.created_at.strftime('%d %B %Y') %> <%= detail.flag %></td>
+        <td><%= detail.menu_name %></td>
+        <td class="text-center"><%= detail.qty %></td>
+        <td class="text-right"><%= number_to_currency(detail.total, unit: "RP ") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

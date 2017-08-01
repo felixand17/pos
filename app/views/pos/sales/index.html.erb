@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-xs-12">
+    <%= form_tag '/pos/orders/sales', method: :get, remote: true, id: 'orderSearch', class: 'form-horizontal' do %>
+      <h2 class="text-center"> Table / Customer </h2>
+      <br/>
+      <div class="form-group text-center">
+        <div class="col-xs-12">
+          <%= text_field_tag :keyword, nil, class: 'form-control input-lg', data: { 'remote-search': true }, autocomplete: 'off', placeholder: 'Table / Customer Name' %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="col-xs-12">
+      <div class="row" id="searchResult">
+        <%= render 'pos/sales/shared/list' %>
+      </div>
+    </div>
+
+    <div class="col-xs-12">
+      <br/>
+      <%= link_to pos_bulk_bill_path, data: { confirm: "This action will print #{@orders.count} bill for #{@orders.count} order and need time to finish. Are you sure?" }, class: "btn btn-block btn-lg btn-success" do %>
+        <i class="fa fa-print"></i> &nbsp; Print All Bill
+      <% end %>
+    </div>
+  </div>
+</div>

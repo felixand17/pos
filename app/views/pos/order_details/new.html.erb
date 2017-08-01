@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-xs-12">
+    <%= form_for ['pos', @order_detail], html: { class: 'form-horizontal addOrderDetail' } do |f| %>
+      <%= hidden_field_tag :order_id, @order.id %>
+      <%= f.hidden_field :order_id %>
+      <%= f.hidden_field :menu_id %>
+      <h3 class="text-center"> <%= "#{@menu.name}".upcase %> </h3>
+      <br/>
+      <% unless @order_detail.menu.picture.blank? %>
+        <div class="thumbnail">
+          <%= image_tag @order_detail.menu.picture.url %>
+        </div>
+        <br/>
+      <% end %>
+      <div class="form-group row">
+        <label class="col-md-12">Quantity <span class="required">*</span></label>
+        <div class="col-md-12">
+          <%= f.number_field :qty, class: 'form-control menu_field', required: true %>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-12">Note</label>
+        <div class="col-md-12">
+          <%= f.text_area :notes, class: 'form-control' %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-block btn-lg btn-custom" id="menuBtn" onclick="this.disabled=true;this.value='Sending';this.form.submit();">
+            <i class="fa fa-check"></i> &nbsp; Add Menu
+          </button>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="row" id="searchResult"></div>
+  </div>
+</div>

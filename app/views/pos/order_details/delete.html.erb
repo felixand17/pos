@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2 class="text-center"><%= "#{@order.customer}".upcase %></h2>
+    <br/>
+    <p class="text-center danger-info">
+      <strong>Confirm cancel menu?</strong>
+    </p>
+    <div class="menuList-container">
+      <div class="menuList boxItem">
+        <div class="menuName">
+          <%= @order_detail.menu_name %> &nbsp; <span class="btn btn-xs btn-info"><%= @order_detail.qty %></span>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <%= link_to pos_order_detail_path(order_id: @order.id, order_detail_id: @order_detail.id), method: :delete, class: 'btn btn-block btn-lg btn-danger' do %>
+      <i class="fa fa-trash"></i> &nbsp; Cancel Menu
+    <% end %>
+    <%= link_to edit_pos_order_path(id: @order.id), class: 'btn btn-block btn-lg btn-default' do %>
+      <i class="fa fa-angle-left"></i> Back
+    <% end %>
+  </div>
+</div>

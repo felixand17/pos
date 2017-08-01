@@ -1,0 +1,17 @@
+<%= txt_align_rt %>
+CK Order
+<%= Time.now.strftime("%d %B %Y %H:%M:%S") %> / <%= user.name rescue '-' %>
+#<%= order.code %> | <%= txt_2width%><%= txt_bold_on %><%= order.customer %>
+
+<%= txt_2height %>
+<%= txt_align_ct %>
+<%= tenant.name %>
+<%= txt_normal %>
+
+<% order_details.each do |item| %>
+<%= txt_2width %>
+ <%= "#{item.qty}x" %> <%= ("#{item.menu_name}".html_safe + ' ' * 40)[0,40] %>
+ <%= txt_normal %><%= ("( #{item.notes} )" + ' ' * 36)[0,36] unless item.notes.blank? %>
+<% end %>
+<%= blank_space %>
+<%= cut_paper %>

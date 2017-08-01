@@ -1,0 +1,58 @@
+<%= content_for(:content_header, 'Role List')%>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header custom">
+        <div class="box-tools custom">
+          <div class="col-xs-6 col-md-2 pull-right">
+            <%= link_to new_iam_role_path(format: 'js'), class: 'btn btn-block btn-sm btn-custom', data: { target: "#modalDialog", toggle: "modal" } do %>
+              <i class="fa fa-plus"></i> &nbsp; Add new role
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <!-- /.box-header -->
+      <div class="box-body table-responsive no-padding">
+        <table class="table table-hover" id="tablepermission">
+          <tbody>
+            <tr>
+              <th>No</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Created at</th>
+              <th></th>
+            </tr>
+            <% if !@roles.blank? %>
+              <% counter = 1 %>
+              <% @roles.each do |role| %>
+                <tr>
+                  <td><%= counter %></td>
+                  <td>
+                    <%= role.name %>
+                  </td>
+                  <td>
+                    <%= role.description %>
+                  </td>
+                  <td><%= role.created_at.strftime('%d, %b %Y') %></td>
+                  <td class="text-center">
+                    <%= link_to edit_iam_role_path(id: role, format: 'js'), class: 'btn btn-sm btn-primary', data: { target: "#modalDialog", toggle: "modal" } do %>
+                      <i class="fa fa-pencil"></i> Edit
+                    <% end %>
+                  </td>
+                </tr>
+                <% counter += 1 %>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="6" class="text-center"><strong>No Data</strong></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+</div>

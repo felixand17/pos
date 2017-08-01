@@ -1,0 +1,41 @@
+<% if !@orders.blank? %>
+  <% counter = 1 %>
+  <% @orders.each do |order| %>
+    <tr>
+      <td><%= counter %></td>
+      <td>
+        <%= link_to order.code, edit_order_path(id: order.id) %>
+      </td>
+      <td><%= link_to order.customer, edit_order_path(id: order.id) %></td>
+      <td><%= link_to order.created_at.strftime('%d-%m-%Y'), edit_order_path(id: order.id) %></td>
+      <td>
+        <%= link_to edit_order_path(id: order.id), class: 'btn btn-xs btn-warning' do %>
+          <span class=""><%= order.state %></span>
+        <% end if can? :update, order %>
+
+        <%= link_to edit_order_path(id: order.id), class: 'btn btn-xs btn-info' do %>
+          <i class="fa fa-flag"></i> &nbsp; AYCE
+        <% end if order.buffet %>
+      </td>
+    </tr>
+    <% counter += 1 %>
+  <% end %>
+<% else %>
+  <tr>
+    <td colspan="7" class="text-center">
+      <% if @order.blank? %>
+        <h3>No data available</h3>
+      <% else %>
+        <div>
+          <%= form_for @order do |f| %>
+            <%= f.hidden_field :customer %>
+            <%= f.hidden_field :user_id %>
+            <button type="submit" class="btn btn-block btn-lg btn-custom">
+              Create &nbsp; <i class="fa fa-angle-right"></i>
+            </button>
+          <% end %>
+        </div>
+      <% end %>
+    </td>
+  </tr>
+<% end %>

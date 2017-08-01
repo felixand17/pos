@@ -1,0 +1,21 @@
+<%= txt_align_rt %><%= txt_2width %><%= txt_bold_on %>
+Table : <%= order.customer %><%= txt_bold_off %><%= txt_normal %>
+<%= Time.now.strftime("%d %B %Y %H:%M:%S") %> / <%= user.name rescue '-' %>
+
+<%= txt_bold_on %><%= txt_2height %><%= txt_2width %><%= txt_align_ct %>
+#<%= order.code %>
+<%= txt_normal %>
+
+<% order_details.each do |item| %>
+  <%= txt_2width %><%= "#{item.qty}x" %> <%= ("#{item.menu_name}".html_safe + ' ' * 39)[0,39] %>
+  <%= txt_normal %><%= ("( #{item.notes} )" + ' ' * 34)[0,34] unless item.notes.blank? %>
+<% end %>
+
+<%= txt_normal %><%= start_line %>
+<%= txt_align_ct %><%= txt_bold_on %><%= txt_2height %>
+"Be patient. Good things take time"
+<%= txt_normal %><%= txt_bold_off %><%= txt_normal %>
+POS Powered By RPS
+<%= "\n"*5 %>
+<%= blank_space %>
+<%= cut_paper %>

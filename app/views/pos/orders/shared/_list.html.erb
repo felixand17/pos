@@ -1,0 +1,5 @@
+<% @orders.each do |order| %>
+  <%= link_to edit_pos_order_path(order.id), class: 'btn btn-block btn-lg btn-default' do %>
+      <i class="fa fa-user"></i> <%= order.customer %>
+  <% end %>
+<% end %>

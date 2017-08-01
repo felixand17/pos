@@ -1,0 +1,11 @@
+<% @menus.each do |menu| %>
+  <tr>
+    <td class="mailbox-name"><%= menu.tenant.name %></td>
+    <td class="mailbox-subject"><%= menu.name %></td>
+    <td class="mailbox-date"><%= menu.price %></td>
+    <td class="mailbox-date"><%= menu.availability ? 'Availble' : 'Sold Out' %></td>
+    <td class="text-right">
+      <%= link_to 'Order', new_order_detail_path(id: params[:id], menu_id: menu.id, order_id: @order.id, format: 'js'), class: 'btn btn-sm btn-success', data: { target: "#modalDialog", toggle: "modal" } if menu.availability %>
+    </td>
+  </tr>
+<% end %>

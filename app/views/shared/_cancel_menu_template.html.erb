@@ -1,0 +1,11 @@
+<%= txt_4square %><%= txt_align_ct %><%= "CANCEL MENU"[0...48] %><%= txt_normal %>
+<%= "#{Time.now.strftime("%d %B %Y %H:%M:%S")}"[0...48].rjust(48, " ") %>
+<%= txt_align_lt %>
+#<%= order.code %><%= txt_bold_on %><%= txt_2height %>
+Table : <%= order.customer %>
+Tenant : <%= "#{order_detail.tenant.name}".html_safe rescue 'Tenant not available' %>
+
+<%= "-#{qty}" %>x <%= ((order_detail.menu_name).html_safe + ' ' * 40)[0,40] %>
+
+<%= blank_space %>
+<%= cut_paper %>

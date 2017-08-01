@@ -1,0 +1,54 @@
+<div class="modal-dialog">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <%= form_for ['iam', @role], method: :put, html: { class: 'form-horizontal' } do |f| %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create Permission</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-md-12">Name <span class="required">*</span></label>
+          <div class="col-md-12">
+            <%= f.text_field :name, class: 'form-control', required: true %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-12">Description</label>
+          <div class="col-md-12">
+            <%= f.text_area :description, class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-xs-12 RolePermissionGroup">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Subject Class</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @permissions.each do |permission| %>
+                  <tr>
+                    <td><%= check_box_tag 'role[permissions][]', permission.id, @role.permissions.include?(permission) ? true : false  %></td>
+                    <td><%= permission.subject_class %></td>
+                    <td><%= permission.action %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success">
+          <i class="fa fa-check"></i> Save
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>

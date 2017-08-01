@@ -1,0 +1,147 @@
+<%= content_for(:content_header, 'Order Process')%>
+
+<div class="row">
+  <div class="col-md-3">
+    <%= link_to cancel_order_path(id: params[:id], order_id: params[:id]), method: :put, data: { confirm: 'This action will cancel all item, are you sure?' }, class: 'btn btn-danger btn-block margin-bottom' do %>
+      <i class="fa fa-warning"></i> &nbsp; CANCEL ORDER
+    <% end if (@order.open? || @order.draft?) && (can? :manage, @order) %>
+
+    <%= link_to set_normal_order_path(id: params[:id], order_id: params[:id]), method: :put, data: { confirm: 'This action will set all item to normal order, are you sure?' }, class: 'btn btn-success btn-block margin-bottom' do %>
+      <i class="fa fa-check"></i> &nbsp; Set Normal Order
+    <% end if (@order.open? || @order.draft?) && @order.buffet && (can? :manage, Order) %>
+
+    <div class="box box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title">Order Information</h3>
+
+        <div class="box-tools">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="box-body no-padding">
+        <ul class="nav nav-pills nav-stacked">
+          <li>
+            <div class="row">
+              <label class="col-xs-5">CUSTOMER:</label>
+              <div class="col-xs-7"><%= @order.customer %></div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <label class="col-xs-5">Pax:</label>
+              <div class="col-xs-7"><%= @order.pax %></div>
+            </div>
+          </li>
+          <li>
+            <div class="row">
+              <label class="col-xs-5">WAITERS:</label>
+              <div class="col-xs-7"><%= @order.user.name rescue '-' %></div>
+            </div>
+          </li>
+          <% if @order.close? %>
+            <li>
+              <div class="row">
+                <label class="col-xs-5">CASHIER:</label>
+                <div class="col-xs-7"><%= @order.sale.user.name rescue '-' %></div>
+              </div>
+            </li>
+          <% end %>
+          <li>
+            <div class="row">
+              <label class="col-xs-5">SUB TOTAL:</label>
+              <div class="col-xs-7 text-right">
+                <%= number_to_currency(@order.total_amount, unit: "RP ") %>
+              </div>
+            </div>
+          </li>
+          <% if @order.close? %>
+            <li>
+              <div class="row">
+                <label class="col-xs-5">TAX:</label>
+                <div class="col-xs-7 text-right">
+                  <%= number_to_currency(@order.order_tax, unit: "RP ") %>
+                </div>
+              </div>
+            </li>
+            <% if enable_order_service%>
+              <li>
+                <div class="row">
+                  <label class="col-xs-5">Service:</label>
+                  <div class="col-xs-7 text-right">
+                    <%= number_to_currency(@order.order_service, unit: "RP ") %>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+            <li>
+              <div class="row">
+                <label class="col-xs-5">Total:</label>
+                <div class="col-xs-7 text-right">
+                  <%= number_to_currency(@order.total_amount_tax, unit: "RP ") %>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="row">
+                <label class="col-xs-5">PAYMENT:</label>
+                <div class="col-xs-7 text-right">
+                  <%= number_to_currency(@order.sale.payment, unit: "RP ") %>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="row">
+                <label class="col-xs-5">CHANGE:</label>
+                <div class="col-xs-7 text-right">
+                  <%= number_to_currency(@order.sale.payment - @order.total_amount_tax, unit: "RP ") %>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /. box -->
+  </div>
+  <div class="col-md-9">
+    <div class="box box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title">Order Items</h3>
+        <!-- /.box-tools -->
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body no-padding">
+        <div class="table-responsive mailbox-messages">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th></th>
+                <th>Tenant</th>
+                <th>Menu</th>
+                <th>Notes</th>
+                <th>Comment</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render 'orders/shared/details' %>
+            </tbody>
+          </table>
+          <!-- /.table -->
+        </div>
+        <!-- /.mail-box-messages -->
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /. box -->
+  </div>
+  <div class="col-md-12">
+    <%= render 'orders/shared/log' %>
+  </div>
+</div>

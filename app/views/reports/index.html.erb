@@ -1,0 +1,52 @@
+<%= content_for(:content_header, 'Report')%>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-body">
+        <div class="row">
+          <%= form_tag reports_path, remote: true, class: 'form-horizontal loader' do %>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="col-xs-12">Start Date</label>
+                <div class="col-xs-12">
+                  <%= text_field_tag  :start_date, nil, class: 'form-control datepicker', data: { 'date-format': 'yyyy-mm-dd' }, required: true %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="col-xs-12">End Date</label>
+                <div class="col-xs-12">
+                  <%= text_field_tag  :end_date, nil, class: 'form-control datepicker', data: { 'date-format': 'yyyy-mm-dd' }, required: true %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="col-xs-12">Tenant</label>
+                <div class="col-xs-12">
+                  <%= select_tag  :tenant_id, options_from_collection_for_select(@tenants, 'id', 'name'), class: 'form-control' %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="col-xs-12">&nbsp;</label>
+                <div class="col-xs-12">
+                  <%= submit_tag 'Generate', class: 'btn btn-block btn-success', onsubmit: "this.disabled=true;this.value='Sending';this.form.submit();" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="table-responsive no-padding" id="reportPreview">
+        </div>
+      </div>
+      <%= block_loader %>
+    </div>
+  </div>
+</div>

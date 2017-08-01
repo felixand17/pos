@@ -1,0 +1,55 @@
+<table class="table table-hover">
+  <tbody>
+    <tr>
+      <th>No</th>
+      <th></th>
+      <th>Order Number</th>
+      <th>Menu Name</th>
+      <th>Quantity</th>
+      <th>Note</th>
+      <th>Comment</th>
+      <th>Created at</th>
+      <th>Status</th>
+    </tr>
+    <% if !@order_details.blank? %>
+      <% counter = 1 %>
+      <% @order_details.each do |detail| %>
+        <tr>
+          <td><%= counter %></td>
+          <td class="text-center">
+            <% if detail.is_pending? %>
+              <%= link_to confirm_order_details_path(id: detail.order_id, order_id: detail.order_id, order_detail_id: detail.id), method: :put, class: 'btn btn-sm btn-primary' do %>
+                <i class="fa fa-check"></i> Confirm
+              <% end %>
+
+              <%= link_to reject_order_details_path(id: detail.order_id, order_id: detail.order_id, order_detail_id: detail.id, format: 'js'), data: { target: "#modalDialog", toggle: "modal" }, class: 'btn btn-sm btn-warning' do %>
+                <i class="fa fa-times"></i> Reject
+              <% end %>
+            <% end %>
+
+            <%= link_to deliver_order_details_path(id: detail.order_id, order_id: detail.order_id, order_detail_id: detail.id), method: :put, class: 'btn btn-sm btn-primary' do %>
+              <i class="fa fa-check"></i> Deliver
+            <% end if detail.is_on_progress? %>
+          </td>
+          <td>#<%= detail.order.code %></td>
+          <td><%= detail.menu_name %></td>
+          <td><%= detail.qty %></td>
+          <td><%= detail.notes %></td>
+          <td><%= detail.comment %></td>
+          <td><%= detail.created_at.strftime('%d, %b %Y %H:%M:%S') %></td>
+          <td>
+            <strong>
+              <%= item_status(detail) %>
+              <%= detail.flag %>
+            </strong>
+          </td>
+        </tr>
+        <% counter += 1 %>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="7" class="text-center"><strong>No Data</strong></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

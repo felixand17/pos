@@ -1,0 +1,31 @@
+<ul class="timeline">
+  <% @notifications.each do |key, value| %>
+    <!-- timeline time label -->
+    <li class="time-label">
+      <span class="bg-red">
+        <%= key.to_date.strftime('%d %B, %Y') %>
+      </span>
+    </li>
+    <!-- /.timeline-label -->
+    <% value.each do |notification| %>
+      <!-- timeline item -->
+      <li>
+        <!-- timeline icon -->
+        <i class="fa fa-bell bg-blue"></i>
+        <div class="timeline-item">
+          <span class="time">
+            <i class="fa fa-clock-o"></i>
+            <%= notification[:created_at].to_datetime.strftime('%H:%M') %>
+          </span>
+
+          <h3 class="timeline-header">
+            <%= link_to notification_path(notification[:id]) do %>
+              <%= notification[:message] %>
+            <% end %>
+          </h3>
+        </div>
+      </li>
+      <!-- END timeline item -->
+    <% end %>
+  <% end %>
+</ul>

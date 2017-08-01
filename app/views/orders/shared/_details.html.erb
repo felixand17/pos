@@ -1,0 +1,39 @@
+<% counter = 1 %>
+<% @order_details.each do |detail| %>
+  <tr class="<%= detail.is_rejected? ? 'rejected' : '' %>">
+    <td><%= counter %></td>
+    <td class="text-center">
+      <% unless enable_captain_order %>
+        <% if detail.is_pending? %>
+          <%= link_to confirm_order_details_path(id: detail.order_id, order_id: detail.order_id, order_detail_id: detail.id), method: :put, class: 'btn btn-sm btn-primary' do %>
+            <i class="fa fa-check"></i> Confirm
+          <% end %>
+
+          <%= link_to reject_order_details_path(id: detail.order_id, order_id: detail.order_id, order_detail_id: detail.id, format: 'js'), data: { target: "#modalDialog", toggle: "modal" }, class: 'btn btn-sm btn-danger' do %>
+            <i class="fa fa-times"></i> Reject
+          <% end %>
+        <% end %>
+
+        <%= link_to deliver_order_details_path(id: detail.order_id, order_id: detail.order_id, order_detail_id: detail.id), method: :put, class: 'btn btn-sm btn-primary' do %>
+          <i class="fa fa-check"></i> Deliver
+        <% end if detail.is_on_progress? %>
+      <% end %>
+    </td>
+    <td class="mailbox-name"><%= detail.tenant.name %></td>
+    <td class="mailbox-name"><%= detail.menu_name %></td>
+    <td class="mailbox-subject"><%= detail.notes %></td>
+    <td class="mailbox-subject"><%= detail.comment %></td>
+    <td class="mailbox-star"><b><%= detail.qty %></b></td>
+    <td class="mailbox-date"><%= detail.price %></td>
+    <td class="mailbox-date"><%= detail.flag %></td>
+    <td class="text-right">
+      <%= link_to 'javascript:void(0)', class: 'btn btn-xs btn-info' do %>
+        <i class="fa fa-flag"></i> &nbsp; AYCE
+      <% end if detail.buffet %>
+      <%= link_to order_detail_path(id: @order.id, order_detail_id: detail.id, format: 'js'), method: :delete, class: 'btn btn-sm btn-danger', data: { target: "#modalDialog", toggle: "modal" } do %>
+        <i class="fa fa-trash"></i> Remove
+      <% end if !@order.open? && !@order.close? %>
+    </td>
+  </tr>
+  <% counter += 1 %>
+<% end %>

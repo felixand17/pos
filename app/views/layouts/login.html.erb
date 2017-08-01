@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>FoodCourt</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body class="hold-transition skin-green-light login-page">
+    <div class="row">
+      <div class="login-box">
+        <div class="col-md-12">
+          <div class="login-logo">
+            <a href="#"><b>KUKU</b>MAMA</a>
+          </div>
+          <!-- /.login-logo -->
+          <div class="login-box-body">
+            <%= yield %>
+          </div>
+        <!-- /.login-box-body -->
+        </div>
+      </div>
+    </div>
+    <%= render'shared/modal_ie' %>
+  </body>
+</html>
